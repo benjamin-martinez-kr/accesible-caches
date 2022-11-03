@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - test
 
 env:
   DUMMY_ENV: false
@@ -19,12 +18,10 @@ jobs:
       - name: GITHUB_REF
         run: |
           echo ${GITHUB_REF}
-          echo ${{ env.GITHUB_REF }}
 
       - name: GITHUB_REF_NAME
         run: |
           echo ${GITHUB_REF_NAME}
-          echo ${{ env.GITHUB_REF_NAME }}
 
       - name: github.ref
         run: |
@@ -61,13 +58,7 @@ jobs:
           restore-keys: |
             yarn-
 
-      - uses: actions/cache@v3
-        id: node-modules-cache
-        with:
-          path: node_modules
-          key: node-modules-${{ steps.yarn-lock-checksum.outputs.checksum }}
-
       - name: Install dependencies
-        if: steps.node-modules-cache-cache.outputs.cache-hit != 'true'
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: |
           yarn install --silent --frozen-lockfile --json --no-progress 2>&1 | tee yarn_install.txt
