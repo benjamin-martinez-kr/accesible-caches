@@ -6,6 +6,9 @@ on:
       - main
       - test
 
+env:
+  DUMMY_ENV: false
+
 jobs:
   cache:
     name: Update Cache
@@ -23,14 +26,16 @@ jobs:
           echo ${GITHUB_REF_NAME}
           echo ${{ env.GITHUB_REF_NAME }}
 
+      - name: github.ref
+        run: |
+          echo ${{ github.ref }}
+
+      - name: github.event.ref
+        run: |
+          echo ${{ github.event.ref }}
+
       - name: Branch is main?
         if: ${{ github.ref == 'ref/heads/main' }}
-        run: |
-          echo ${GITHUB_REF_NAME}
-          echo ${{ env.GITHUB_REF_NAME }}
-
-      - name: Branch is main - alt?
-        if: ${GITHUB_REF} == 'ref/heads/main'
         run: |
           echo ${GITHUB_REF_NAME}
           echo ${{ env.GITHUB_REF_NAME }}
