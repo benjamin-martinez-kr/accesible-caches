@@ -1,3 +1,5 @@
+name: Cache from base/default branch
+
 on:
   push:
     branches:
