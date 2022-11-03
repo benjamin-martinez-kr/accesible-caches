@@ -35,10 +35,9 @@ jobs:
           echo ${{ github.event.ref }}
 
       - name: Branch is main?
-        if: ${{ github.ref == 'ref/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo ${GITHUB_REF_NAME}
-          echo ${{ env.GITHUB_REF_NAME }}
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
