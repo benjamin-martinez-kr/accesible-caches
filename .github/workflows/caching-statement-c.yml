@@ -44,6 +44,6 @@ jobs:
           key: node-modules-${{ steps.yarn-lock-checksum.outputs.checksum }}
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: |
           yarn install --silent --frozen-lockfile --json --no-progress 2>&1 | tee yarn_install.txt
