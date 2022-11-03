@@ -1,9 +1,9 @@
-name: Statement C
+name: Statement C - Test
 
 on:
   push:
     branches:
-      - statement-c
+      - statement-c-test
 
 env:
   DUMMY_ENV: false
