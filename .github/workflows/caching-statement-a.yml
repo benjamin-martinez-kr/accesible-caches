@@ -1,0 +1,43 @@
+name: Statement A
+
+on:
+  push:
+    branches:
+      - statement-a
+
+env:
+  DUMMY_ENV: false
+
+jobs:
+  cache:
+    name: Update Cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Set-up yarn lock checksum
+        id: yarn-lock-checksum
+        run: |
+          echo ::set-output name=checksum::${{ hashFiles('**/yarn.lock') }}
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ steps.yarn-lock-checksum.outputs.checksum }}
+          restore-keys: |
+            yarn-
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn install --silent --frozen-lockfile --json --no-progress 2>&1 | tee yarn_install.txt
